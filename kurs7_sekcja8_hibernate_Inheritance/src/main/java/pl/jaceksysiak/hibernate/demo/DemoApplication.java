@@ -1,5 +1,6 @@
 package pl.jaceksysiak.hibernate.demo;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,9 +12,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import pl.jaceksysiak.hibernate.demo.entity.Course;
+import pl.jaceksysiak.hibernate.demo.entity.FullTimeEmployee;
+import pl.jaceksysiak.hibernate.demo.entity.PartTimeEmployee;
 import pl.jaceksysiak.hibernate.demo.entity.Review;
 import pl.jaceksysiak.hibernate.demo.entity.Student;
 import pl.jaceksysiak.hibernate.demo.repository.CourseRepository;
+import pl.jaceksysiak.hibernate.demo.repository.EmployeeRepository;
 import pl.jaceksysiak.hibernate.demo.repository.StudentRepository;
 
 @SpringBootApplication
@@ -24,6 +28,9 @@ public class DemoApplication implements CommandLineRunner {
 	
 	@Autowired
 	StudentRepository studentRepository;
+	
+	@Autowired
+	private EmployeeRepository employeeRepository;
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -49,6 +56,7 @@ public class DemoApplication implements CommandLineRunner {
 		
 	  //courseRepository.addHardcodedReviewsForCourse();
 		
+		/*
 		List<Review> reviews = new ArrayList<>();
 		reviews.add(new Review("5", "Great Hands-on Stuff."));	
 		reviews.add(new Review("5", "Hatsoff."));
@@ -57,7 +65,15 @@ public class DemoApplication implements CommandLineRunner {
 		
 		studentRepository.insertHardcodedStudentAndCourse();
 		studentRepository.insertStudentAndCourse(new Student("Jack"), new Course("Microservices in 100 Steps"));
+		*/
 		
+
+		// Jack FullTimeEmployee salary - 10000$
+		// Jill PartTimeEmployee - 50$ per hour
+		employeeRepository.insert(new PartTimeEmployee("Jill", new BigDecimal("50")));
+		employeeRepository.insert(new FullTimeEmployee("Jack", new BigDecimal("10000")));
+
+		logger.info("All Employees -> {}", employeeRepository.retrieveAllEmployees());
 		
 	}
 }
